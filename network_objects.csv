@@ -1,0 +1,8 @@
+id,name,type,value,description
+dc2fc022-3e40-11ee-b2d2-eb41c0c6b9ab,Google-DNS,networkobject,8.8.8.8,
+82c88092-3e39-11ee-bec0-d3d84e0aaaea,IPv4-Private-10.0.0.0-8,networkobject,10.0.0.0/8,
+82cec223-3e39-11ee-bec0-ab5c17c86d54,IPv4-Private-172.16.0.0-12,networkobject,172.16.0.0/12,
+82d551d4-3e39-11ee-bec0-993f11a020e8,IPv4-Private-192.168.0.0-16,networkobject,192.168.0.0/16,
+d2f00b4f-3e40-11ee-b2d2-ed8f74020385,VSA-1,networkobject,52.67.234.123,MyVSA Server
+82ab0d80-3e39-11ee-bec0-3bb9802b1a36,any-ipv4,networkobject,0.0.0.0/0,
+82c217f1-3e39-11ee-bec0-9b4f0519a0e1,any-ipv6,networkobject,::/0,
