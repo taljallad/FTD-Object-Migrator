@@ -17,9 +17,6 @@ EXCLUDE_OBJECTS = [
     "any-ipv6"
 ]
 
-def get_host_input():
-    return input("Please enter the IP address or hostname of the FDM: ")
-
 def get_fdm_token(host,port,username,password,verify_ssl):   
     url = f"https://{host}:{port}/api/fdm/latest/fdm/token"
     headers = {
@@ -63,7 +60,7 @@ def get_fdm_token_with_ssl_check(host, port, username, password):
             print("Exiting due to SSL verification failure during token retrieval.")
             return None
 
-def get_request(host, port, endpoint, token, verify_ssl=VERIFY_SSL, method="GET", data=None):   
+def make_request(host, port, endpoint, token, verify_ssl=VERIFY_SSL, method="GET", data=None):   
     url = f"https://{host}:{port}{endpoint}"
     headers = {
         "Content-Type": "application/json",
@@ -87,14 +84,14 @@ def get_request(host, port, endpoint, token, verify_ssl=VERIFY_SSL, method="GET"
 
 def get_network_objects(host, port, token, verify_ssl=VERIFY_SSL):
     endpoint = "/api/fdm/latest/object/networks"
-    response_data = get_request(host, port, endpoint, token, verify_ssl)
+    response_data = make_request(host, port, endpoint, token, verify_ssl)
     
     return response_data.get("items", [])
 
 def get_firewall_serial(host, port,token, verify_ssl=VERIFY_SSL):
     endpoint = "/api/fdm/latest/operational/systeminfo/default"
     try:
-        response_data = get_request(host, port, endpoint, token, verify_ssl)
+        response_data = make_request(host, port, endpoint, token, verify_ssl)
         return response_data.get("serialNumber", "UNKNOWN_SERIAL")
     except requests.RequestException as e:
         print(f"Error occurred while fetching firewall serial: {e}")
@@ -162,7 +159,7 @@ def import_from_csv(filename,host, port,token,existing_objects,verify_ssl=VERIFY
                             update_data['description'] = row['description']
                         if 'dnsResolution' in row:
                             update_data['dnsResolution'] = row['dnsResolution']
-                        response_data = get_request(host, port, update_url, token, verify_ssl,method="PUT", data=update_data)
+                        response_data = make_request(host, port, update_url, token, verify_ssl,method="PUT", data=update_data)
                         print(response_data)
                         if response_data:
                             print(f"Successfully updated {row['name']}.")
@@ -174,7 +171,7 @@ def import_from_csv(filename,host, port,token,existing_objects,verify_ssl=VERIFY
                     print(f"Object {row['name']} already exists with no differences. Skipping.")
             else:
                 try:
-                    response_data = get_request(host, port, endpoint, token, verify_ssl,method="POST", data=data)
+                    response_data = make_request(host, port, endpoint, token, verify_ssl,method="POST", data=data)
                     print(response_data)
                 # Optionally, print a success message for each object
                     if response_data:
